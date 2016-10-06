@@ -29,7 +29,9 @@ Rather than requiring users to package their RTL as an IP and to
 modify the 3000 line base.tcl, provide a way to incorporate their IP
 as an I/O processor instead of one of the provided I/O processors.
 
-In addition, wrap simple Verilog modules with memory-mapped adapters:
+In addition, wrap simple Verilog modules with memory-mapped
+adapters. These examples show Verilog strings, but of course the
+verilog could be read from files.
 
     from pynq.verilog import VerilogIop
 
@@ -187,7 +189,7 @@ For logic that needs some handshaking, e.g., FIFO, VerilogIop understands AXI st
 
 ## G4: Enable pythonic expression of RTL
 
-Instead of using Verilog, provide [MyHdl](http://www.myhdl.org) modules.
+Instead of using Verilog, user writes [MyHdl](http://www.myhdl.org) modules.
 
 # How achievable is this?
 
