@@ -64,7 +64,7 @@ For logic that needs some handshaking, e.g., FIFO, VerilogIop understands AXI st
               // AXI stream input to module
               input x_data,
               input x_valid,  // data is valid when this is 1
-              output x_ready, // if not provided, data is assumed to be 
+              output x_ready, // optional
 
               // AXI stream output from module
               output y_data,
@@ -152,7 +152,7 @@ For logic that needs some handshaking, e.g., FIFO, VerilogIop understands AXI st
               // AXI stream input to module
               input x_data,
               input x_valid,  // data is valid when this is 1
-              output x_ready, // if not provided, data is assumed to be 
+              output x_ready, // optional
 
               // AXI stream output from module
               output y_data,
