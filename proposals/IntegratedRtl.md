@@ -25,11 +25,69 @@ many steps. Too tedious for something that could be fun.
 
 ## G1: Enable incremental extension of base design
 
+Rather than requiring users to package their RTL as an IP and to
+modify the 3000 line base.tcl, provide a way to incorporate their IP
+as an I/O processor instead of one of the provided I/O processors.
+
+In addition, wrap simple Verilog modules with memory-mapped adapters:
+
     from pynq.verilog import VerilogIop
 
     iop = VerilogIop('''
-       module (input x, output pmod_d1);
+       module (
+              input CLK,
+
+              // wrapper provides a value for x
+              input x,
+
+              // wrapper reads y
+              output y,
+              
+              // pmod pins routed to pmod connector
+              output pmod_d1,
+              input pmod_d2,
+              );
           assign pmod_d1 = x;
+          assign y = pmod_d2;
+       endmodule
+    ''')
+    pl = Base(pmod_iop1=iop))
+
+For logic that needs some handshaking, e.g., FIFO, VerilogIop understands AXI stream interfaces:
+
+    iop = VerilogIop('''
+       module (
+              input CLK,
+
+              // AXI stream input to module
+              input x_data,
+              input x_valid,  // data is valid when this is 1
+              output x_ready, // if not provided, data is assumed to be 
+
+              // AXI stream output from module
+              output y_data,
+              output y_valid, // optional
+              input  y_ready, // consume the value
+
+              // wrapper reads y
+              output y,
+              
+              // pmod pins routed to pmod connector
+              output pmod_d1,
+              input pmod_d2,
+              );
+          reg x_reg;
+          assign x_ready = 1;
+          assign y_valid = 1;
+          assign pmod_d1 = x_reg;
+          assign y_data = pmod_d2;
+          always @(posedge CLK) begin
+             if (x_valid == 1)
+                x_reg = x_data;
+             if (y_ready == 1) begin
+                ...
+             end
+          end                 
        endmodule
     ''')
     pl = Base(pmod_iop1=iop))
@@ -52,18 +110,18 @@ many steps. Too tedious for something that could be fun.
        module (
               input CLK,
 
-	      // wrapper provides a value for x
-       	      input x,
+              // wrapper provides a value for x
+              input x,
 
-	      // wrapper reads y
-	      output y,
-	      
-	      // pmod pins routed to pmod connector
-	      output pmod_d1,
-	      input pmod_d2,
-	      );
+              // wrapper reads y
+              output y,
+              
+              // pmod pins routed to pmod connector
+              output pmod_d1,
+              input pmod_d2,
+              );
           assign pmod_d1 = x;
-	  assign y = pmod_d2;
+          assign y = pmod_d2;
        endmodule
     ''')
     pl = Base(pmod_iop1=iop))
@@ -80,32 +138,32 @@ For logic that needs some handshaking, e.g., FIFO, VerilogIop understands AXI st
        module (
               input CLK,
 
-	      // AXI stream input to module
-       	      input x_data,
-       	      input x_valid,  // data is valid when this is 1
-	      output x_ready, // if not provided, data is assumed to be 
+              // AXI stream input to module
+              input x_data,
+              input x_valid,  // data is valid when this is 1
+              output x_ready, // if not provided, data is assumed to be 
 
-	      // AXI stream output from module
-       	      output y_data,
-       	      output y_valid, // optional
-	      input  y_ready, // consume the value
+              // AXI stream output from module
+              output y_data,
+              output y_valid, // optional
+              input  y_ready, // consume the value
 
-	      // wrapper reads y
-	      output y,
-	      
-	      // pmod pins routed to pmod connector
-	      output pmod_d1,
-	      input pmod_d2,
-	      );
+              // wrapper reads y
+              output y,
+              
+              // pmod pins routed to pmod connector
+              output pmod_d1,
+              input pmod_d2,
+              );
           reg x_reg;
-	  assign x_ready = 1;
-	  assign y_valid = 1;
-	  assign pmod_d1 = x_reg;
-	  assign y_data = pmod_d2;
-	  always @(posedge CLK) begin
-	     if (x_valid == 1)
-	        x_reg = x_data;
-	  end	      	      
+          assign x_ready = 1;
+          assign y_valid = 1;
+          assign pmod_d1 = x_reg;
+          assign y_data = pmod_d2;
+          always @(posedge CLK) begin
+             if (x_valid == 1)
+                x_reg = x_data;
+          end                 
        endmodule
     ''')
     pl = Base(pmod_iop1=iop))
