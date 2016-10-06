@@ -1,5 +1,5 @@
-Simplifying the use of Progammable Logic on Pynq-Z1
-===================================================
+Seamless Python Programmable Logic Interactions on Pynq-Z1
+==========================================================
 
 The Pynq Python framework makes it very easy to use python to interact
 with external modules via standard interfaces such as SPI, I2C, HDMI.
