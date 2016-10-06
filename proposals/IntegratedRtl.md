@@ -92,8 +92,12 @@ For logic that needs some handshaking, e.g., FIFO, VerilogIop understands AXI st
     ''')
     pl = Base(pmod_iop1=iop))
 
+Adapters can be provided for other common interface idioms as desired.
 
 ## G2: Enable bitstream generation without Vivado download
+
+Rather than downloading and installing Vivado every quarter, provide a
+mechanism for the Jupiter notebook kernel to use a build service. 
 
     # generates verilog from pl
     # checks for cached bitstream
@@ -102,9 +106,14 @@ For logic that needs some handshaking, e.g., FIFO, VerilogIop understands AXI st
     # elapsed time, 1 second to 5 minutes
     bitstream = pl.generate_bitstream()
 
+The service may require the user to have an account or the servce may
+just authenticate with the PynqZ1 board itself.
 
 ## G3: Enable pythonic interactions with the RTL
 
+Now that the user has a new bitstream incorporating their logic,
+provide a way to interact with it from python using the generated
+memory-mapped adapter.
 
     iop = VerilogIop('''
        module (
@@ -181,6 +190,8 @@ For logic that needs some handshaking, e.g., FIFO, VerilogIop understands AXI st
 Instead of using Verilog, provide [MyHdl](http://www.myhdl.org) modules.
 
 # How achievable is this?
+
+This is all very doable.
 
 [Connectal](http://www.connectal.org) already provides solutions for
 G1 and G3 when the RTL is written in Bluespec Systems Verilog
