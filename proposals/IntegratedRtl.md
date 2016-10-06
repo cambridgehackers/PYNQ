@@ -8,8 +8,7 @@ These same modules could be ported to on a Raspberry Pi or
 Arduino. They do not seem to expose the capabilities of the Zynq
 programmable logic.
 
-Problem: It's too difficult to use the Pynq-Z1 Programmable Logic
------------------------------------------------------------------
+# Problem: It's too difficult to use the Pynq-Z1 Programmable Logic
 
 If a user of Pynq-Z1 wants to incorporate their own RTL, they have to
 download 10+ GB of Vivado, and learn to use it. To  extend the base
@@ -22,10 +21,9 @@ To me, this seems like a very steep learning curve. It's a gigantic
 cliff. Even for someone who knows an RTL language, I think it's too
 many steps. Too tedious for something that could be fun.
 
-Goals:
-------
+# Goals:
 
-G1: Enable incremental extension of base design
+## G1: Enable incremental extension of base design
 
     from pynq.verilog import VerilogIop
 
@@ -37,7 +35,7 @@ G1: Enable incremental extension of base design
     pl = Base(pmod_iop1=iop))
 
 
-G2: Enable bitstream generation without Vivado download
+## G2: Enable bitstream generation without Vivado download
 
     # generates verilog from pl
     # checks for cached bitstream
@@ -47,7 +45,7 @@ G2: Enable bitstream generation without Vivado download
     bitstream = pl.generate_bitstream()
 
 
-G3: Enable pythonic interactions with the RTL
+## G3: Enable pythonic interactions with the RTL
 
 
     iop = VerilogIop('''
