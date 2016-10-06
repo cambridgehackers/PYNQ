@@ -1,5 +1,5 @@
-Pynq Python RTL Proposal
-=========================
+Simplifying the use of Progammable Logic on Pynq-Z1
+===================================================
 
 The Pynq Python framework makes it very easy to use python to interact
 with external modules via standard interfaces such as SPI, I2C, HDMI.
@@ -175,4 +175,30 @@ For logic that needs some handshaking, e.g., FIFO, VerilogIop understands AXI st
     ## alternately, to distinguish from registers:
     pl.put_x(1)
     print("pl.y==%d' % pl.get_y())
+
+## G4: Enable pythonic expression of RTL
+
+Instead of using Verilog, provide [MyHdl](http://www.myhdl.org) modules.
+
+# How achievable is this?
+
+[Connectal](http://www.connectal.org) already provides solutions for
+G1 and G3 when the RTL is written in Bluespec Systems Verilog
+(BSV). Connectal is open source on
+https://github.com/cambridgehackers/connectal.
+
+Connectal includes a script for wrapping Verilog modules and for
+constructing memory-mapped adapters for modules. This could be adapter
+to implement pynq.verilog.VerilogIop.
+
+We previously prototyped a build service so that people could use
+Connectal on a zedboard without installing any new software.
+
+Connectal [buildcache](https://github.com/cambridgehackers/buildcache)
+is a tool that re-uses previous builds of unchanged sources. We use
+this on Connectal's buildbot and in standard developer builds.
+
+G4 adds a dependence to the project but does not change the technical
+difficulty. Actually, if MyHdl was supported but not Verilog, it would
+be easier because we would not have to parse Verilog.
 
