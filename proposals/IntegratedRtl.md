@@ -111,6 +111,13 @@ mechanism for the Jupiter notebook kernel to use a build service.
 The service may require the user to have an account or the servce may
 just authenticate with the PynqZ1 board itself.
 
+## G2.5 Speed up bitstream generation
+
+There are a couple of things I do to speed up bitstream generation
+
+ * Generate separate netlists for submodules, increases opportunity for caching synthesis of unchanged modules
+ * Hierarchical place and route to reduce the amount of work required
+
 ## G3: Enable pythonic interactions with the RTL
 
 Now that the user has a new bitstream incorporating their logic,
